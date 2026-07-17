@@ -1,0 +1,14 @@
+/* Cativa DS — Tenant Theming (GAP-DS-008)
+ * Carregue SEMPRE depois de cativa.tokens.css.
+ * Faz -strong / -soft derivarem de --cds-primary, para que o HOST
+ * sobrescreva UMA única var por tenant e tudo em cascata acompanhe.
+ *
+ * Contrato: o host injeta, por tenant, no :root (ou no wrapper do embed):
+ *     --cds-primary: <customer.colors.quaternary>;
+ *     --cds-on-primary: <#fff ou #18181b conforme contraste>;   (use applyTenantTheme)
+ * O DS continua com violeta como DEFAULT quando nada é injetado.
+ */
+:root, [data-theme="dark"], [data-theme="light"] {
+  --cds-primary-strong: color-mix(in oklab, var(--cds-primary) 84%, #000);
+  --cds-primary-soft:   color-mix(in srgb, var(--cds-primary) 14%, transparent);
+}

@@ -1,0 +1,83 @@
+/*  Cativa Design System — Design Tokens
+ *  Fonte única de verdade para cores, tipografia, espaçamento, raios e elevação.
+ *  Escuro é o tema padrão. Ative o claro com [data-theme="light"] em qualquer ancestral.
+ *  NUNCA hardcode valores — sempre use var(--cds-*).
+ */
+
+/* Fontes: adicione no <head> do embed
+   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"> */
+
+:root, [data-theme="dark"] {
+  /* superfícies */
+  --cds-bg:            #0a0a0c;
+  --cds-surface:       #141416;
+  --cds-surface-2:     #1b1b1f;
+  --cds-surface-3:     #232328;
+  --cds-border:        rgba(255,255,255,0.07);
+  --cds-border-strong: rgba(255,255,255,0.14);
+  /* texto */
+  --cds-text:          #f4f4f6;
+  --cds-text-2:        #a1a1aa;
+  --cds-text-3:        #71717a;
+  /* primária */
+  --cds-primary:       #8b5cf6;
+  --cds-primary-strong:#7c3aed;
+  --cds-primary-soft:  rgba(139,92,246,0.14);
+  --cds-on-primary:    #ffffff;
+  /* semânticas */
+  --cds-success:       #34d399;  --cds-success-soft: rgba(52,211,153,0.13);
+  --cds-danger:        #fb7185;  --cds-danger-soft:  rgba(251,113,133,0.13);
+  --cds-warning:       #fbbf24;  --cds-warning-soft: rgba(251,191,36,0.13);
+  --cds-info:          #22d3ee;  --cds-info-soft:    rgba(34,211,238,0.13);
+  /* elevação */
+  --cds-shadow-raised:  0 4px 16px rgba(0,0,0,0.28);
+  --cds-shadow-overlay: 0 18px 50px rgba(0,0,0,0.45);
+  --cds-shadow-glow:    0 10px 40px -8px var(--cds-primary);
+}
+
+[data-theme="light"] {
+  --cds-bg:            #f7f7f8;
+  --cds-surface:       #ffffff;
+  --cds-surface-2:     #f2f2f4;
+  --cds-surface-3:     #e9e9ec;
+  --cds-border:        rgba(9,9,11,0.08);
+  --cds-border-strong: rgba(9,9,11,0.14);
+  --cds-text:          #18181b;
+  --cds-text-2:        #52525b;
+  --cds-text-3:        #a1a1aa;
+  --cds-primary:       #7c3aed;
+  --cds-primary-strong:#6d28d9;
+  --cds-primary-soft:  rgba(124,58,237,0.10);
+  --cds-on-primary:    #ffffff;
+  --cds-success:       #059669;  --cds-success-soft: rgba(5,150,105,0.10);
+  --cds-danger:        #e11d48;  --cds-danger-soft:  rgba(225,29,72,0.10);
+  --cds-warning:       #d97706;  --cds-warning-soft: rgba(217,119,8,0.10);
+  --cds-info:          #0891b2;  --cds-info-soft:    rgba(8,145,178,0.10);
+  --cds-shadow-raised:  0 4px 16px rgba(9,9,11,0.08);
+  --cds-shadow-overlay: 0 18px 50px rgba(9,9,11,0.16);
+  --cds-shadow-glow:    0 10px 40px -8px var(--cds-primary);
+}
+
+:root {
+  /* tipografia */
+  --cds-font-sans:  'Onest', system-ui, -apple-system, sans-serif;
+  --cds-font-serif: 'Newsreader', Georgia, serif;
+  --cds-font-mono:  'JetBrains Mono', ui-monospace, monospace;
+  --cds-fs-display: 40px; --cds-lh-display: 1.02;
+  --cds-fs-h1: 30px; --cds-fs-h2: 24px; --cds-fs-body: 16px;
+  --cds-fs-sm: 13px; --cds-fs-label: 11px; --cds-fs-mono: 13px;
+  --cds-fw-regular: 400; --cds-fw-medium: 500; --cds-fw-semibold: 600;
+  --cds-fw-bold: 700; --cds-fw-extrabold: 800;
+  --cds-tracking-label: 0.08em; --cds-tracking-tight: -0.02em;
+  /* espaçamento (base 4) */
+  --cds-space-2xs: 4px;  --cds-space-xs: 8px;  --cds-space-sm: 12px;
+  --cds-space-md: 16px;  --cds-space-lg: 24px; --cds-space-xl: 32px;
+  --cds-space-2xl: 48px; --cds-space-3xl: 64px;
+  /* raios */
+  --cds-radius-sm: 8px; --cds-radius-md: 10px; --cds-radius-lg: 14px;
+  --cds-radius-xl: 20px; --cds-radius-pill: 999px;
+  /* z-index */
+  --cds-z-sticky: 20; --cds-z-overlay: 100; --cds-z-toast: 110;
+  /* motion */
+  --cds-ease: cubic-bezier(.2,.8,.2,1); --cds-duration: .15s;
+}
