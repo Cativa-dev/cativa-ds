@@ -1,5 +1,14 @@
 # Changelog — Cativa Design System
 
+## 1.4.0 — o pacote passa a entregar o que promete (2026-08-11)
+
+> Fecha o **P5** do D-31 (`arquitetura-alvo.md` §4.3), que é pré-requisito declarado da extração para repo próprio. Medido: `files` listava `tokens`, `integrations` e `scripts` — e **não** `css/`, `components/` nem `icons/`. Consequência: um consumidor que instalasse a v1.3.0 receberia os tokens e **não receberia o design system** — nem `cativa.components.css` (as 32 classes da v1.2.0), nem o `.cds-skeleton` recém-nascido, nem os ícones inline. A entrega da própria versão não saía do pacote.
+
+- **`files` passa a incluir `css`, `components` e `icons`.** Sem isso, `npm pack`/`npm install` publicava um pacote sem a camada de componentes.
+- **`exports` ganha as duas entradas que faltavam:** `./components.css` → `css/cativa.components.css` (o veículo das receitas desde a v1.2.0) e `./icons/inline` → `icons/lucide-inline.json`. A chave `./icons` **permanece** apontando para a allowlist (`tokens/lucide-allowlist.json`) — são duas coisas diferentes e continuam distinguíveis.
+- **Zero mudança de conteúdo.** Nenhum token, nenhuma classe, nenhum doc alterado — é correção de **empacotamento**. Por isso é minor e não patch: o que o pacote entrega muda.
+- **Por que agora:** a ordem do §4.3 é `B-1 → bump com o slot correto + correção de files/exports → extração → submódulo`. Extrair antes desta correção carregaria o defeito para o repo novo e o tornaria a fonte de verdade dele.
+
 ## 1.3.0 — skeleton (2026-08-11)
 
 > Fecha o GAP-DS-027, achado no gate do módulo Flashcards (`laudo-nina.md`, B-2): o pacote não tinha veículo para o estado `carregando` do "Contrato de estado de dado" (`components.md`) — só o spinner de botão (`.cds-btn__spinner`, escopo diferente) e o contrato **proíbe** spinner de página inteira. Sem o veículo, os 4 caminhos de carregamento do piloto usavam o spinner proibido.
