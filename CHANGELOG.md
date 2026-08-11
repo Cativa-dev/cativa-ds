@@ -1,5 +1,14 @@
 # Changelog — Cativa Design System
 
+## 1.3.0 — skeleton (2026-08-11)
+
+> Fecha o GAP-DS-027, achado no gate do módulo Flashcards (`laudo-nina.md`, B-2): o pacote não tinha veículo para o estado `carregando` do "Contrato de estado de dado" (`components.md`) — só o spinner de botão (`.cds-btn__spinner`, escopo diferente) e o contrato **proíbe** spinner de página inteira. Sem o veículo, os 4 caminhos de carregamento do piloto usavam o spinner proibido.
+
+- **GAP-DS-027 FECHADA — nasce `.cds-skeleton`.** Bloco de carregamento (`surface-2` → shimmer `surface-3`, `border-radius-sm`), variantes `--text` (linha, empilhável) e `--circle` (avatar/ícone), e a composição `.cds-metric__value.cds-skeleton` (caixa do número da Métrica — é exatamente o "esqueleto na caixa do número" do contrato). Respeita `prefers-reduced-motion`. Zero hardcode (`lint:tokens` ✅).
+- **Documentação:** item 33 em `components/COMPONENTS-02.md`; exemplo de estado `carregando` na Métrica (item 7); `components.md` §Contrato de estado de dado aponta para a implementação.
+- **Não entrou:** skeleton de linha de tabela (composição específica de `.cds-table__row`) e "estado vazio de tabela" — seguem ausentes, sem gap novo aberto para não duplicar o que já está registrado.
+- **Correção de doc:** a célula `carregando` do contrato citava `--cds-duration` — token removido na v1.2.0 (substituído por `--cds-duration-fast|base|slow`). Referência corrigida; a animação do shimmer usa duração própria (`1.6s`, mesmo padrão do `.cds-btn__spinner`, que já hardcoda `0.7s`).
+
 ## 1.2.0 — a camada de componentes (2026-08-10)
 
 > Bump que existia para acontecer desde o gate do D-28: o pacote tinha **tokens de sobra e zero componente implementado**. Origem: exportação do projeto de design, triada pela @Nina em `../triagem-pacote-2026-08-10.md`.

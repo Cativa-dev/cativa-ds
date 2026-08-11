@@ -271,7 +271,7 @@
 
 **Variantes:** nenhuma.
 
-**Estados:** repouso **sim**; hover de linha **sim** (surface-2); **não existem**: linha selecionada, foco de linha, ordenação, zebra, densidade compacta, **estado vazio**, carregando/skeleton, erro de carga, somente-leitura.
+**Estados:** repouso **sim**; hover de linha **sim** (surface-2); **não existem**: linha selecionada, foco de linha, ordenação, zebra, densidade compacta, **estado vazio**, erro de carga, somente-leitura. Carregando tem primitivo (`.cds-skeleton`, item 33) mas **falta a composição de linha de tabela** — hoje é só o bloco genérico.
 
 **Tamanhos:** único. Colunas via variável `--cds-table-cols`.
 
@@ -317,7 +317,7 @@
 
 **Variantes:** ícone `--primary|--success|--danger|--warning`; delta `--up|--down`.
 
-**Estados:** repouso **sim**. **NÃO EXISTEM**: carregando, vazio, erro, indisponível, zero tratado, hover, foco, selecionado, desabilitado, somente-leitura. O componente **só sabe renderizar um número presente**.
+**Estados:** repouso **sim**; **carregando** via composição com `.cds-skeleton` (item 33, ver exemplo abaixo). **NÃO EXISTEM**: vazio, erro, indisponível, zero tratado, hover, foco, selecionado, desabilitado, somente-leitura. Fora do repouso e do carregando, o componente **só sabe renderizar um número presente**.
 
 **Tamanhos:** único.
 
@@ -341,6 +341,22 @@
     <span class="cds-metric__value--prev">9</span>
   </div>
   <span class="cds-metric__delta cds-metric__delta--down">↘ -2 (-22%)</span>
+</article>
+```
+
+**Estado `carregando`** (contrato: o rótulo permanece legível, só a caixa do número vira esqueleto):
+```html
+<article class="cds-metric">
+  <header class="cds-metric__head">
+    <span class="cds-metric__name">Matrículas únicas</span>
+    <span class="cds-metric__icon cds-metric__icon--danger">
+      <svg class="cds-icon cds-icon--sm" data-lucide="user-round" aria-hidden="true"></svg>
+    </span>
+  </header>
+  <div class="cds-metric__periods"><span>Últimos 7 dias</span><span>Período anterior</span></div>
+  <div class="cds-metric__values">
+    <span class="cds-metric__value cds-skeleton" role="status" aria-label="Carregando"></span>
+  </div>
 </article>
 ```
 

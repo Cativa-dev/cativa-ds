@@ -405,6 +405,42 @@ Viola a restrição 4 do destino. O `<path>` com curvas foi escrito manualmente,
 
 ---
 
+## 33. Skeleton — `.cds-skeleton`
+**Estado: [IMPLEMENTADO]** — v1.3.0, GAP-DS-027.
+
+**Para que serve:** o veículo do estado `carregando` do contrato de estado de dado (`components.md` §"Contrato de estado de dado") — um bloco animado (`surface-2` → `surface-3`, shimmer) que ocupa o lugar de um valor ainda não chegado, **na caixa do dado**, com o rótulo ao redor já legível.
+
+**Quando NÃO usar:** para carregamento de página/tela inteira (**jamais** — o contrato proíbe; use o estado `indisponivel` se a fonte demorar além do razoável) nem como substituto de `.cds-btn[data-loading="true"]` (o spinner de botão já existe e é de escopo diferente).
+
+**Anatomia:** bloco (`div`/`span`) com fundo + shimmer via `::after`; variantes de forma (`--text`, `--circle`) e a composição `.cds-metric__value.cds-skeleton` (caixa do número da Métrica).
+
+**Variantes:** `--text` (altura de linha, `0.875em`, empilhável), `--circle` (avatar/ícone), composição direta com `.cds-metric__value` (dimensão da caixa do número, `--cds-fs-h2`).
+
+**Estados:** só o de carregamento em si — não tem hover/foco (não é interativo). Respeita `prefers-reduced-motion` (shimmer desliga, fica só o bloco estático).
+
+**Tamanhos:** dimensão vem do contexto (largura do bloco/linha) ou da composição (`.cds-metric__value`); sem tamanhos nomeados próprios.
+
+**API:** classes. Nenhuma prop.
+
+**A11y:** o bloco não tem texto — marcar com `role="status"` + `aria-label` descritivo (ver exemplo no item 7, Metric card) para que leitor de tela anuncie "carregando" em vez de ler um espaço vazio.
+
+**Ícones:** nenhum.
+
+```html
+<!-- linha de texto -->
+<span class="cds-skeleton cds-skeleton--text" role="status" aria-label="Carregando"></span>
+<span class="cds-skeleton cds-skeleton--text" role="status" aria-label="Carregando"></span>
+
+<!-- avatar (herda o formato e o tamanho de .cds-avatar, já é radius-full) -->
+<span class="cds-avatar cds-skeleton" role="status" aria-label="Carregando"></span>
+```
+
+`--circle` existe para compor com um contêiner que já dá largura/altura (ex.: `.cds-avatar`, `.cds-metric__icon`) sem depender de `style=""` — a CSP do pacote não permite inline (GAP-DS-016).
+
+Composição na Métrica: ver item 7 (Metric card), estado `carregando`.
+
+---
+
 # Componentes que aparecem só como NOME
 
 Itens citados no briefing ou no inventário do projeto que **não têm código nem spec**. Estado: **[SÓ NOME]**.
@@ -419,5 +455,4 @@ Itens citados no briefing ou no inventário do projeto que **não têm código n
 | Radio button | implícito em formulários; nunca feito |
 | Multi-select / combobox | nunca feito |
 | Empty state | citado na 1ª rodada de perguntas; **nunca feito** |
-| Skeleton / loading de página | nunca feito |
 | Breadcrumb truncado, Stepper, Accordion, Slider, Date picker, File upload, Rich text | nunca citados nem feitos — listados aqui só para deixar explícito que **não existem** |
