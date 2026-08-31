@@ -1,5 +1,18 @@
 # Changelog — Cativa Design System
 
+## 1.5.0 — o **dito** ganha veículo (2026-08-31)
+
+> Fecha a **GAP-DS-040**, aberta no gate da forma (A) em 2026-08-30 e reforçada no gate da cascata do horizonte em 2026-08-31. Spec da @Nina (`fabric-platform` · `laudo-nina-cascata.md` §7), que também é quem a auditou: **não é componente novo — é extensão aditiva do `.cds-banner`**.
+
+- **GAP-DS-040 FECHADA — nasce `.cds-banner--dito`.** O pacote não tinha veículo para uma classe de mensagem que as doutrinas de estudo exigem: a afirmação que **permanece até ser reconhecida** ou **até o fato que a motivou deixar de valer**, e que pode **carregar a ação que resolve o fato**. Medido nos quatro candidatos existentes, e **os quatro morrem**: `.cds-banner` é persistente mas o verbete diz *"sem botão fechar, sem ação"* e *"dispensável/fechado NÃO EXISTE"* · `.cds-announce` tem ação mas **não é dispensável**, é global no topo e warning-only · **toast** é efêmero, e a doutrina o proíbe **nominalmente** · **modal** bloqueia. **Nenhum dos quatro servia, e eram todos os que existiam.**
+- **Duas partes novas:** `.cds-banner__actions` (1 ação, 2 no máximo; `--secondary`/`--ghost`, ⛔ **nunca `--primary`**) e `.cds-banner__ack` (o reconhecimento, `.cds-btn--icon` + `x` com `aria-label` real). Mais `.cds-banner__body`, o envelope que deixa o `__ack` ancorar sem empurrar o texto.
+- 🔴 **Um estado que nenhum design system tem: `extinto por fato`.** A peça morre **sem ato da pessoa** quando o fato deixa de valer — a vida dela é presa a um **predicado de fato**, não a uma sessão e não a um relógio. O verbete **obriga o consumidor a declarar esse predicado**. ⛔ E o estado `reconhecível` morre **só pelo ato**: sem `setTimeout`, sem auto-hide, sem saída por relógio. **Qualquer duração fixa é a violação** — não é preferência, é a cláusula que a peça existe para servir.
+- **Âncora `--inline`** (colada ao controle que motivou a mensagem), que serve *"a razão no mesmo ato"* sem exigir um segundo componente.
+- **7 regras de contrato no verbete**, e elas são o produto tanto quanto o CSS. A que mais custa: *"o reconhecimento é do EVENTO, nunca do assunto"* — guardar por assunto faz o **segundo** fato da mesma espécie sair em silêncio. E a nº 4: *"a ação pode ABRIR uma entrada; o dito nunca CONTÉM a entrada"* — é o que impede o banner-formulário.
+- **Nada foi inventado.** A ação compõe de `.cds-btn--secondary/--ghost`, o reconhecimento de `.cds-btn--icon`, a entrada de `.cds-modal` + `.cds-field` + `.cds-input`, e os ícones `x`/`info`/`check-circle-2`/`alert-triangle` **já estavam na allowlist**.
+- **Por que MINOR e não major:** aditivo puro — nenhuma classe renomeada, nenhuma removida, nenhum token alterado. O `.cds-banner` sem `--dito` se comporta **exatamente** como na v1.4.0. `lint:tokens` ✅ (zero hardcode).
+- ⚠️ **O que esta versão NÃO faz:** ela entrega o **veículo**, não o **uso**. Cada consumidor ainda precisa declarar o predicado de fato e a casa durável da ação (regras 2 e 6). **Pacote com a peça ≠ produto com o dito certo** — quem homologa a superfície é o gate visual, não o bump.
+
 ## 1.4.0 — o pacote passa a entregar o que promete (2026-08-11)
 
 > Fecha o **P5** do D-31 (`arquitetura-alvo.md` §4.3), que é pré-requisito declarado da extração para repo próprio. Medido: `files` listava `tokens`, `integrations` e `scripts` — e **não** `css/`, `components/` nem `icons/`. Consequência: um consumidor que instalasse a v1.3.0 receberia os tokens e **não receberia o design system** — nem `cativa.components.css` (as 32 classes da v1.2.0), nem o `.cds-skeleton` recém-nascido, nem os ícones inline. A entrega da própria versão não saía do pacote.
