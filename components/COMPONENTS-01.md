@@ -207,6 +207,8 @@
 
 **Variantes:** neutra (default, borda), `--primary`, `--success`, `--danger`, `--warning`, `--info`, e **`--dot`** (chip opaco + ponto semântico — ver abaixo).
 
+**Variantes do ponto** (`.cds-badge__dot` + uma): `--primary` · `--success` · `--danger` · `--warning` · `--info`. Sem modificador, o ponto é neutro (`--cds-text-3`). ⚠️ **São as cinco cores cheias**, não as `*-soft`: aqui a cor é uma **forma de 8px**, não um fundo de texto — o critério é o **não-textual** de 3:1 da WCAG 1.4.11, e quem carrega a informação é o **texto do chip**.
+
 🔴 **`--dot` é o único que garante o próprio contraste.** As cinco variantes coloridas pintam cor cheia sobre fundo `*-soft`, que é **translúcido**: o que o olho recebe depende da superfície **atrás**, então o componente **não pode garantir o próprio contraste** — passa numa superfície e reprova em outra. `--dot` troca o mecanismo: superfície **opaca** (`--cds-surface-2`) + texto neutro (`--cds-text`) + um **ponto** (`.cds-badge__dot--*`) que carrega o significado. ⇒ **AA por construção**, em qualquer tema, sob qualquer acento de tenant, sobre qualquer fundo — *(medido: 15.63:1 no escuro, 15.85:1 no claro)*. É o mesmo vocabulário do `.cds-status__dot`, que o pacote já tinha. ⛔ **A cor nunca é o único portador:** o texto do chip diz o estado, e o ponto leva `aria-hidden`.
 
 ⚠️ **As cinco coloridas continuam existindo** (remover seria *major*) — use-as onde o fundo é conhecido e o texto não precisa de AA. **Onde precisa, use `--dot`.**
