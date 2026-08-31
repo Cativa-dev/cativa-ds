@@ -48,10 +48,17 @@
   --cds-info:             #22d3ee;
   --cds-info-soft:        rgba(34,211,238,0.13);
 
-  /* -- texto legível sobre superfície semântica cheia -- */
+  /* -- texto legível sobre superfície semântica cheia --
+     ⚠️ ESTES VALORES SAO CALCULADOS, NAO ESCOLHIDOS. A regra e a `readableOn()` do
+     `integrations/tenant-theming.js`, que o host ja aplica em RUNTIME para o acento do
+     tenant: entre `#ffffff` e `#18181b`, vence o que der mais contraste sobre a cor cheia.
+     Os tokens estaticos simplesmente nunca tinham sido recalculados por ela — e por isso
+     `on-danger` era branco sobre `#fb7185`, 2,69:1, o pior par do sistema.
+     ⛔ Mudar um destes NAO e decisao de marca: e reaplicar a regra. Mudar o `--cds-danger`
+     ao lado, esse sim, seria. */
   --cds-on-warning:       #1a1a1a;
   --cds-on-success:       #0a2a1e;
-  --cds-on-danger:        #ffffff;
+  --cds-on-danger:        #18181b;   /* era #ffffff = 2,69:1 (reprovava). Agora 6,58:1 */
 
   /* -- elevação -- */
   --cds-shadow-raised:    0 0.25rem 1rem rgba(0,0,0,0.28);
@@ -91,8 +98,9 @@
   --cds-info:             #0891b2;
   --cds-info-soft:        rgba(8,145,178,0.10);
 
-  --cds-on-warning:       #ffffff;
-  --cds-on-success:       #ffffff;
+  /* -- mesma regra `readableOn()` do bloco escuro -- */
+  --cds-on-warning:       #18181b;   /* era #ffffff = 3,19:1 (reprovava). Agora 5,56:1 */
+  --cds-on-success:       #18181b;   /* era #ffffff = 3,77:1 (reprovava). Agora 4,70:1 */
   --cds-on-danger:        #ffffff;
 
   --cds-shadow-raised:    0 0.25rem 1rem rgba(9,9,11,0.08);
