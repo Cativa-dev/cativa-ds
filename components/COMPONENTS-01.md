@@ -504,4 +504,93 @@
 </div>
 ```
 
+---
+
+## 11b. Banner **dito** — `.cds-banner--dito`
+**Estado: [IMPLEMENTADO]** · nasce na **v1.5.0**, fechando a **GAP-DS-040**
+
+**Para que serve:** a afirmação que uma **doutrina manda dizer** e que **permanece até ser
+reconhecida pela pessoa, ou até o fato que a motivou deixar de valer**. Pode **carregar a ação
+que resolve o fato**.
+
+> 🔴 **O que torna esta peça diferente de "banner com botão de fechar":** a vida dela é presa a um
+> **predicado de fato**, não a uma sessão e não a um relógio. O consumidor **é obrigado a declarar
+> esse predicado**. É a parte que nenhum design system tem, e é a razão de a variação existir.
+
+**Quando NÃO usar:** confirmação efêmera (é `toast` — e as doutrinas que consomem esta peça o
+**proíbem nominalmente**) · aviso global no topo (é `.cds-announce`) · qualquer coisa que precise
+**bloquear** (é `.cds-modal` — e o dito **nunca** é modal).
+
+**Anatomia:** herda `__icon` · `__title` · `__text`, e acrescenta:
+
+| Parte | Regra |
+|---|---|
+| `.cds-banner__actions` | **1 ação, 2 no máximo.** `.cds-btn--secondary` ou `--ghost`. ⛔ **nunca `--primary`** — o acento da região pertence à ação principal do contexto, não ao dito |
+| `.cds-banner__ack` | O **reconhecimento**. `.cds-btn--icon` + ícone `x`, com `aria-label` real (*"Entendi"*) — ⛔ **nunca um `×` tipográfico solto** |
+| `.cds-banner__body` | Envelope de `__title` + `__text`, para o `__ack` ancorar à direita sem empurrar o texto |
+
+**Variantes de cor:** herda `--info`, `--success`, `--danger`, `--warning`. Ver a **regra 5**.
+
+**Âncoras:** `bloco` (numa região, padrão) · `.cds-banner--inline` (colado ao controle que o
+motivou — é a âncora que serve a razão **no mesmo ato**, sem exigir um segundo componente).
+
+**Estados** *(os três, e os inexistentes declarados)*:
+
+| Estado | Como nasce / como morre |
+|---|---|
+| **repouso** | herdado do `.cds-banner` |
+| **reconhecível** | tem `__ack`. Morre **pelo ato da pessoa**. ⛔ **Nunca por tempo** — sem `setTimeout`, sem auto-hide, sem saída animada por relógio. **Qualquer duração fixa é a violação** |
+| **extinto por fato** | morre **sem ato da pessoa**, porque o fato deixou de valer. O consumidor declara o predicado |
+| ~~dispensável por tempo~~ | ⛔ **NÃO EXISTE, e é proibido** |
+| ~~bloqueante~~ | ⛔ **NÃO EXISTE** — é `.cds-modal` |
+
+**API:** só classes. O predicado de fato e a persistência do reconhecimento são do **consumidor**.
+
+### O contrato — é aqui que os bugs moram
+
+1. **O reconhecimento é do EVENTO, nunca do assunto.** Guardar o "já reconheci" por *assunto*
+   (ex.: por item) faz o **segundo** fato da mesma espécie sair em **silêncio**. Guarde por evento.
+2. **A ação que o dito carrega pode sobreviver ao dito.** Se o fato dura mais que a afirmação, a
+   ação **também mora** na leitura durável do estado. ⚠️ **O componente não resolve isso sozinho —
+   este verbete obriga o consumidor a declarar a casa durável da ação.**
+3. **Máximo um por região.** Dois empilhados violam *"um evento, um dito"* por construção. Dois
+   fatos vivos ⇒ duas regiões, ou um dito só.
+4. **A ação pode ABRIR uma entrada; o dito nunca CONTÉM a entrada.** ⛔ Não existe
+   "banner-formulário". A ação abre `.cds-modal` + `.cds-field`, e **a resposta volta para o mesmo
+   lugar, no mesmo ato**.
+5. **Cor:** `--info` para fato sobre o trabalho da pessoa · `--warning` **só** para *fonte fora do
+   ar* · ⛔ `--danger` **nunca** para erro da pessoa · `--success` reservado ao *"acabou"*.
+6. **A11y:** `role="status"` (⛔ `alert` **só** quando é erro de verdade) · não rouba foco ·
+   reconhecido, o foco vai para uma âncora estável; **extinto por fato, o foco não se move** ·
+   `__text` em `--cds-text-2`, ⛔ **nunca** `--cds-text-3`.
+7. **Nunca modal, nunca bloqueia.**
+
+**Ícones:** `info`, `check-circle-2`, `alert-triangle` (semântico) · `x` (reconhecimento) —
+todos já na allowlist.
+
+```html
+<!-- dito reconhecível, carregando a ação que resolve o fato -->
+<div class="cds-banner cds-banner--info cds-banner--dito" role="status">
+  <svg class="cds-icon cds-icon--md cds-banner__icon" data-lucide="info" aria-hidden="true"></svg>
+  <div class="cds-banner__body">
+    <p class="cds-banner__title">Este cartão saiu de circulação para você</p>
+    <p class="cds-banner__text">O problema é do cartão, não seu. Você pode trazê-lo de volta.</p>
+    <div class="cds-banner__actions">
+      <button class="cds-btn cds-btn--secondary" type="button">Trazer de volta</button>
+    </div>
+  </div>
+  <button class="cds-btn cds-btn--icon cds-banner__ack" type="button" aria-label="Entendi">
+    <svg class="cds-icon cds-icon--sm" data-lucide="x" aria-hidden="true"></svg>
+  </button>
+</div>
+
+<!-- ancora inline: a razao colada ao controle que a motivou -->
+<div class="cds-banner cds-banner--info cds-banner--dito cds-banner--inline" role="status">
+  <svg class="cds-icon cds-icon--sm cds-banner__icon" data-lucide="info" aria-hidden="true"></svg>
+  <div class="cds-banner__body">
+    <p class="cds-banner__text">Pediu 40, cabem 12 hoje.</p>
+  </div>
+</div>
+```
+
 CONTINUA em COMPONENTS-02.md

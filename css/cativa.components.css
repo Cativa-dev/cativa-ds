@@ -440,6 +440,41 @@
 .cds-banner--warning { background: var(--cds-warning-soft); }
 .cds-banner--warning .cds-banner__icon { color: var(--cds-warning); }
 
+/* ---- .cds-banner--dito : o DITO da doutrina (GAP-DS-040, spec @Nina) --------------
+   Extensao ADITIVA do banner. Serve a afirmacao que uma doutrina manda dizer e que
+   permanece ate ser RECONHECIDA ou ate o FATO que a motivou deixar de valer.
+   ⛔ NUNCA morre por tempo: sem setTimeout, sem auto-hide, sem saida por relogio.
+   Qualquer duracao fixa e a violacao. A vida da peca e presa a um PREDICADO DE FATO,
+   e e por isso que ela existe -- nenhum outro componente do pacote tem esse estado.
+   ⛔ Nunca modal, nunca bloqueia. Nunca `--primary` na acao: o acento da regiao
+   pertence a acao principal do contexto, nao ao dito. -------------------------------- */
+.cds-banner--dito { align-items: flex-start; }
+.cds-banner--dito .cds-banner__body { flex: 1 1 auto; min-width: 0; }
+
+/* A acao que o dito CARREGA. 1 acao, 2 no maximo. */
+.cds-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cds-space-xs);
+  margin-top: var(--cds-space-xs);
+}
+
+/* O RECONHECIMENTO. Botao de icone real, com aria-label -- nunca um `x` tipografico. */
+.cds-banner__ack {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  margin-top: calc(var(--cds-space-2xs) * -1);
+}
+
+/* Ancora `inline`: colado ao controle que o motivou (serve a razao no mesmo ato,
+   sem exigir um segundo componente). */
+.cds-banner--inline {
+  padding: var(--cds-space-xs) var(--cds-space-sm);
+  border-radius: var(--cds-radius-md);
+}
+.cds-banner--inline .cds-banner__title { font-size: var(--cds-fs-sm); }
+.cds-banner--inline .cds-banner__text  { font-size: var(--cds-fs-xs); }
+
 .cds-announce { display: flex; align-items: center; gap: 0.875rem; padding: var(--cds-space-sm) var(--cds-space-md); border: 1px solid var(--cds-warning); border-radius: var(--cds-radius-sm); background: var(--cds-warning-soft); }
 .cds-announce__tag { display: inline-flex; align-items: center; gap: 0.375rem; padding: var(--cds-space-2xs) 0.625rem; border-radius: 0.375rem; background: var(--cds-warning); color: var(--cds-on-warning); font-size: var(--cds-fs-label); font-weight: var(--cds-fw-bold); letter-spacing: var(--cds-tracking-label); text-transform: uppercase; }
 .cds-announce__text { font-size: var(--cds-fs-ui); font-weight: var(--cds-fw-medium); }
