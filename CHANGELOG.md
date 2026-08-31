@@ -1,5 +1,51 @@
 # Changelog — Cativa Design System
 
+## 1.7.0 — 3 dos 4 pares reprovados fecham **sem tocar em marca** (2026-08-31)
+
+> Fecha a maior parte da **GAP-DS-042**, aberta pela guarda da v1.6.0. ⚠️ **E o achado que muda a
+> natureza da gap: ela não era, na maior parte, um problema de marca.**
+
+- 🔴 **Os `--cds-on-*` são CALCULADOS, não escolhidos — e nunca tinham sido calculados.** A regra
+  existe no pacote desde a v1.1.0: `readableOn()`, em `integrations/tenant-theming.js`, escolhe entre
+  `#ffffff` e `#18181b` **pelo contraste**, e o host já a aplica em **runtime** para o acento do
+  tenant. Os tokens **estáticos** simplesmente nunca foram recalculados por ela. ⇒ **corrigir isto
+  não é decisão de marca: é reaplicar a regra do próprio pacote.**
+
+  | tema | par | era | **virou** |
+  |---|---|---:|---:|
+  | dark | `on-danger` | **2,69:1** *(o pior do sistema)* | **6,58:1** |
+  | light | `on-warning` | 3,19:1 | **5,56:1** |
+  | light | `on-success` | 3,77:1 | **4,70:1** |
+
+  ⛔ **Nenhum hue de marca foi tocado.** `--cds-danger`, `--cds-warning` e `--cds-success` estão
+  byte a byte iguais. Mudou o **neutro companheiro**, que é derivado.
+
+- 🔴 **O passivo cai de 17 para 14 — e, mais importante, muda de NATUREZA.** A allowlist ganha o
+  campo `classe`, porque tratar as 14 como a mesma coisa escondia que **13 delas não são decisão de
+  ninguém**:
+
+  | classe | n | o que resolve |
+  |---|--:|---|
+  | **regra de uso** (AGENTS §2.5) — cor cheia sobre `*-soft` | **5** | migrar para `.cds-badge--dot`, que existe desde a v1.6.0. **O valor está certo; o defeito seria o uso** |
+  | **regra de uso** (AGENTS §5) — `--cds-text-3` | **8** | a regra *"nunca para conteúdo essencial"* **já existe**; e para conteúdo não-essencial a WCAG isenta. Escurecer custaria `#686871` no claro (−57 níveis), **encostando no `--cds-text-2` e colapsando dois degraus da escala** |
+  | 🔴 **decisão de marca** | **1** | ver abaixo |
+
+- 🔴 **Sobra UM par, e ele é decisão de marca de verdade — medido, não suposto.** Sobre o
+  `--cds-primary` do tema escuro (`#8b5cf6`), **nenhum dos dois neutros do sistema alcança AA**:
+  `#ffffff` dá **4,23** e `#18181b` dá **4,18**. **Só mudar o violeta conserta.** E
+  `.cds-btn--primary` consome esse par **no tema default**, com texto de 14px semibold — **normal,
+  não large** ⇒ AA-large não se aplica sem mexer na tipografia do botão. **Fica com o sponsor.**
+
+- ✅ **A guarda cobrou a própria limpeza, e foi a primeira vez.** Ao consertar os três, o
+  `lint-contrast` **reprovou** com *"agora PASSA — remova a entrada"*. O mecanismo anti-apodrecimento
+  disparou num conserto real, exatamente como foi desenhado: **allowlist que não encolhe quando a
+  dívida é paga vira ficção**.
+
+- **Por que MINOR:** ajuste de **valor** de token existente (governança do README). Nenhuma classe,
+  nenhum verbete, nenhum token renomeado ou removido. ⚠️ **Mas é mudança VISÍVEL** em 4 consumidores
+  — `.cds-btn--danger-solid`, `.cds-seal--gold`, `.cds-seal--green`, `.cds-announce__tag`: o texto
+  deles deixa de ser branco e passa a ser quase-preto. **É o conserto, e ele aparece.**
+
 ## 1.6.1 — 🔴 a guarda estava medindo uma configuração que ninguém serve (2026-08-31)
 
 > **A v1.6.0 corrigiu um número e a correção estava errada.** Está aqui em vez de escondida num

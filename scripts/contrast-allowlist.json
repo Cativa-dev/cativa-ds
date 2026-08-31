@@ -1,7 +1,7 @@
 {
   "gerado_por": "scripts/lint-contrast.mjs",
-  "o_que_e_isto": "PASSIVO DECLARADO de contraste. Cada linha e um par que REPROVA AA (4.5:1) hoje, com o valor medido no dia em que a guarda nasceu. A guarda falha em regressao nova e em piora destes; NAO os transforma em conformidade. Entrada aqui NAO e aprovacao — e divida visivel com dono.",
-  "como_sair_daqui": "Corrigir o par (mudar o token de marca) OU aceitar formalmente e declarar o nivel (ex.: AA-large so para texto grande). As duas saidas sao do sponsor. Ao corrigir, REMOVA a entrada — a guarda reprova entrada obsoleta de proposito, para o passivo nao apodrecer.",
+  "o_que_e_isto": "PASSIVO DECLARADO de contraste. Cada linha e um par que REPROVA AA (4.5:1) hoje. ⚠️ E as linhas NAO sao todas da mesma natureza — o campo `classe` diz qual: 'decisao de marca' (so mudar o token conserta, e nao e de quem escreve codigo) x 'regra de uso' (o VALOR esta certo; o defeito seria usa-lo onde a propria AGENTS ja proibe). Entrada aqui NAO e aprovacao — e divida visivel com dono.",
+  "como_sair_daqui": "De 'decisao de marca': o sponsor ajusta o token OU aceita e declara o nivel. De 'regra de uso': migrar os consumidores (o `*-soft` tem `.cds-badge--dot` desde a v1.6.0; o `--cds-text-3` tem `--cds-text-2`). Ao resolver, REMOVA a entrada — a guarda reprova entrada obsoleta de proposito, e foi assim que os 3 pares consertados na v1.7.0 foram cobrados.",
   "metodo": "WCAG 2.1, luminancia relativa, valores reais de tokens/cativa.tokens.css, por tema. Fundo translucido: composicao alfa sobre cada superficie opaca da casa; o valor gravado e o MELHOR caso.",
   "aberto_em": "2026-08-31",
   "origem": "GAP-DS-041 · laudo-nina-contraste.md (fabric-platform) · acao N-3",
@@ -13,16 +13,8 @@
       "razao": 4.23,
       "desde": "2026-08-31",
       "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
-    },
-    {
-      "tema": "dark",
-      "frente": "--cds-on-danger",
-      "fundo": "--cds-danger",
-      "razao": 2.69,
-      "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
+      "motivo": "🔴 O UNICO par que NAO fecha sem tocar em marca, e medido: sobre `--cds-primary` do tema escuro (`#8b5cf6`) NENHUM dos dois neutros do sistema alcanca AA — `#ffffff` da 4,23 e `#18181b` da 4,18. So mudar o violeta conserta. E `.cds-btn--primary` consome este par NO TEMA DEFAULT, com texto de 14px semibold (normal, nao large) ⇒ AA-large nao se aplica sem mudar a tipografia do botao. DECISAO DE MARCA x ACESSIBILIDADE, do sponsor.",
+      "classe": "decisao de marca"
     },
     {
       "tema": "dark",
@@ -30,8 +22,9 @@
       "fundo": "--cds-primary-soft",
       "razao": 4.14,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+      "dono": "consumidores (migrar para --dot)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). ⛔ NAO e defeito de VALOR, e de USO: o AGENTS §2.5 ja proibe texto que precisa de AA sobre `*-soft`, e a v1.6.0 entregou a alternativa `.cds-badge--dot` (chip opaco, AA por construcao). O numero aqui e o MELHOR caso, medido sobre a superficie mais favoravel. Fecha quando o ultimo consumidor migrar para `--dot`, nao quando alguem mudar a cor.",
+      "classe": "regra de uso (AGENTS §2.5) — saida: .cds-badge--dot"
     },
     {
       "tema": "dark",
@@ -39,8 +32,9 @@
       "fundo": "--cds-bg",
       "razao": 4.09,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "dark",
@@ -48,8 +42,9 @@
       "fundo": "--cds-surface",
       "razao": 3.81,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "dark",
@@ -57,8 +52,9 @@
       "fundo": "--cds-surface-2",
       "razao": 3.55,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "dark",
@@ -66,26 +62,9 @@
       "fundo": "--cds-surface-3",
       "razao": 3.24,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
-    },
-    {
-      "tema": "light",
-      "frente": "--cds-on-warning",
-      "fundo": "--cds-warning",
-      "razao": 3.19,
-      "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
-    },
-    {
-      "tema": "light",
-      "frente": "--cds-on-success",
-      "fundo": "--cds-success",
-      "razao": 3.77,
-      "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "light",
@@ -93,8 +72,9 @@
       "fundo": "--cds-success-soft",
       "razao": 3.34,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+      "dono": "consumidores (migrar para --dot)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). ⛔ NAO e defeito de VALOR, e de USO: o AGENTS §2.5 ja proibe texto que precisa de AA sobre `*-soft`, e a v1.6.0 entregou a alternativa `.cds-badge--dot` (chip opaco, AA por construcao). O numero aqui e o MELHOR caso, medido sobre a superficie mais favoravel. Fecha quando o ultimo consumidor migrar para `--dot`, nao quando alguem mudar a cor.",
+      "classe": "regra de uso (AGENTS §2.5) — saida: .cds-badge--dot"
     },
     {
       "tema": "light",
@@ -102,8 +82,9 @@
       "fundo": "--cds-danger-soft",
       "razao": 4.01,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+      "dono": "consumidores (migrar para --dot)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). ⛔ NAO e defeito de VALOR, e de USO: o AGENTS §2.5 ja proibe texto que precisa de AA sobre `*-soft`, e a v1.6.0 entregou a alternativa `.cds-badge--dot` (chip opaco, AA por construcao). O numero aqui e o MELHOR caso, medido sobre a superficie mais favoravel. Fecha quando o ultimo consumidor migrar para `--dot`, nao quando alguem mudar a cor.",
+      "classe": "regra de uso (AGENTS §2.5) — saida: .cds-badge--dot"
     },
     {
       "tema": "light",
@@ -111,8 +92,9 @@
       "fundo": "--cds-warning-soft",
       "razao": 2.86,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+      "dono": "consumidores (migrar para --dot)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). ⛔ NAO e defeito de VALOR, e de USO: o AGENTS §2.5 ja proibe texto que precisa de AA sobre `*-soft`, e a v1.6.0 entregou a alternativa `.cds-badge--dot` (chip opaco, AA por construcao). O numero aqui e o MELHOR caso, medido sobre a superficie mais favoravel. Fecha quando o ultimo consumidor migrar para `--dot`, nao quando alguem mudar a cor.",
+      "classe": "regra de uso (AGENTS §2.5) — saida: .cds-badge--dot"
     },
     {
       "tema": "light",
@@ -120,8 +102,9 @@
       "fundo": "--cds-info-soft",
       "razao": 3.27,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+      "dono": "consumidores (migrar para --dot)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). ⛔ NAO e defeito de VALOR, e de USO: o AGENTS §2.5 ja proibe texto que precisa de AA sobre `*-soft`, e a v1.6.0 entregou a alternativa `.cds-badge--dot` (chip opaco, AA por construcao). O numero aqui e o MELHOR caso, medido sobre a superficie mais favoravel. Fecha quando o ultimo consumidor migrar para `--dot`, nao quando alguem mudar a cor.",
+      "classe": "regra de uso (AGENTS §2.5) — saida: .cds-badge--dot"
     },
     {
       "tema": "light",
@@ -129,8 +112,9 @@
       "fundo": "--cds-bg",
       "razao": 2.39,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "light",
@@ -138,8 +122,9 @@
       "fundo": "--cds-surface",
       "razao": 2.56,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "light",
@@ -147,8 +132,9 @@
       "fundo": "--cds-surface-2",
       "razao": 2.29,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     },
     {
       "tema": "light",
@@ -156,8 +142,10 @@
       "fundo": "--cds-surface-3",
       "razao": 2.12,
       "desde": "2026-08-31",
-      "dono": "sponsor (Ricardo Mota)",
-      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+      "dono": "consumidores (nao usar em conteudo essencial)",
+      "motivo": "Terceiro nivel de texto. ⛔ NAO e defeito de VALOR, e de USO: a regra 5 do AGENTS ja diz *nunca `--cds-text-3` para conteudo essencial* — e para conteudo NAO essencial (desabilitado, decorativo) a WCAG isenta. Passar a AA custaria `#898992` no escuro (+24 niveis) e `#686871` no claro (-57), e o segundo encosta no `--cds-text-2`, colapsando dois degraus da escala. ⇒ o conserto certo e enforcar o USO, nao escurecer o cinza.",
+      "classe": "regra de uso (AGENTS §5)"
     }
-  ]
+  ],
+  "revisado_em": "2026-08-31"
 }
