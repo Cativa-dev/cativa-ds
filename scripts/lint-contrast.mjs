@@ -3,7 +3,14 @@
  * Mede a razão de contraste WCAG 2.1 de TODO par semântico do arquivo de
  * tokens, NOS DOIS TEMAS, e reprova abaixo de AA (4.5:1 para texto normal).
  *
- * Uso:  node scripts/lint-contrast.mjs [tokens/cativa.tokens.css]
+ * Uso:  node scripts/lint-contrast.mjs [arquivo.css ...]
+ *
+ * ⚠️ ELA MEDE A CASCATA, NÃO UM ARQUIVO. Por padrão carrega, NESTA ORDEM:
+ *     tokens/cativa.tokens.css  →  integrations/tenant-theming.css
+ * que é a ordem que todo consumidor usa. Isso NÃO é detalhe: o
+ * `tenant-theming.css` REDEFINE `--cds-primary-soft` para 14% nos DOIS temas,
+ * sobrescrevendo os 10% que o tema claro declara nos tokens. Medir só o
+ * arquivo de tokens dá um número que NENHUM consumidor vê.
  * Exit 1 = reprovado. Plugue no CI ao lado do lint-tokens.
  *
  * POR QUE ELA EXISTE: `lint-tokens.mjs` verifica HARDCODE. Nada verificava
@@ -31,7 +38,20 @@ const AA_TEXTO_NORMAL = 4.5;
 const EPSILON = 0.005; // as razões da allowlist são gravadas com 2 casas
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
-const arquivoTokens = process.argv[2] || join(AQUI, '..', 'tokens', 'cativa.tokens.css');
+const CASCATA_PADRAO = [
+  join(AQUI, '..', 'tokens', 'cativa.tokens.css'),
+  join(AQUI, '..', 'integrations', 'tenant-theming.css'),
+];
+// `--tenant <hex>` = modo DIAGNÓSTICO: reescreve --cds-primary como o
+// `applyTenantTheme` faz em runtime e mostra o que AQUELE tenant recebe.
+// ⛔ NÃO é gate, e a distinção é honesta: não dá para travar CI contra uma cor
+// que só existe no banco do cliente. É instrumento de medição para a decisão
+// do sponsor — e existe porque o número do tenant vinha sendo citado de
+// memória, em duas versões divergentes (BUG-015).
+const iTenant = process.argv.indexOf('--tenant');
+const tenantHex = iTenant > -1 ? process.argv[iTenant + 1] : null;
+const argsCss = process.argv.slice(2).filter((a, i) => i + 2 !== iTenant && i + 2 !== iTenant + 1);
+const cascata = argsCss.length ? argsCss : CASCATA_PADRAO;
 const arquivoAllowlist = join(AQUI, 'contrast-allowlist.json');
 
 /* ---------------------------------------------------------------- cor --- */
@@ -94,6 +114,23 @@ function lerTemas(css) {
   return temas;
 }
 
+/** Resolve `color-mix(in srgb, var(--X) N%, transparent)` — a forma que o
+ *  `tenant-theming.css` usa para derivar o `-soft` do acento. Sem isto, o
+ *  token operativo vira "não é cor sólida" e o par some da medição — a guarda
+ *  ficaria CEGA exatamente onde o consumidor está. */
+function resolver(tokens, nome, vistos = new Set()) {
+  const bruto = tokens[nome];
+  if (bruto === undefined || vistos.has(nome)) return null;
+  vistos.add(nome);
+  const direto = corDeTexto(bruto);
+  if (direto) return direto;
+  const m = /^color-mix\(\s*in\s+srgb\s*,\s*var\(\s*(--[\w-]+)\s*\)\s*([\d.]+)%\s*,\s*transparent\s*\)$/i.exec(bruto.trim());
+  if (!m) return null;
+  const base = resolver(tokens, m[1], vistos);
+  if (!base) return null;
+  return { ...base, a: base.a * (Number(m[2]) / 100) };
+}
+
 /* --------------------------------------------------------------- pares -- */
 
 const TEXTOS = ['--cds-text', '--cds-text-2', '--cds-text-3'];
@@ -144,8 +181,29 @@ function paresDoTema(tokens) {
 
 /* ------------------------------------------------------------ execução -- */
 
-const css = readFileSync(arquivoTokens, 'utf8');
-const temas = lerTemas(css);
+const temas = { dark: {}, light: {} };
+for (const arquivo of cascata) {
+  const parcial = lerTemas(readFileSync(arquivo, 'utf8'));
+  // cascata: o arquivo carregado DEPOIS vence, como no browser
+  temas.dark = { ...temas.dark, ...parcial.dark };
+  temas.light = { ...temas.light, ...parcial.light };
+}
+
+if (tenantHex) {
+  if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(tenantHex)) {
+    console.error(`--tenant precisa de um hex, recebi: ${tenantHex}`);
+    process.exit(2);
+  }
+  // é exatamente o que applyTenantTheme faz: seta --cds-primary e deixa
+  // -soft derivar pelo color-mix do tenant-theming.css. E o -on-primary por
+  // contraste, com o mesmo limiar do helper (L > 0.45 => near-black).
+  const c = corDeTexto(tenantHex);
+  const L = luminancia(c);
+  for (const t of ['dark', 'light']) {
+    temas[t]['--cds-primary'] = tenantHex;
+    temas[t]['--cds-on-primary'] = L > 0.45 ? '#18181b' : '#ffffff';
+  }
+}
 
 let allowlist = { pares: [] };
 try { allowlist = JSON.parse(readFileSync(arquivoAllowlist, 'utf8')); } catch { /* sem allowlist = tolerância zero */ }
@@ -163,8 +221,8 @@ const tolerados = [];
 for (const tema of ['dark', 'light']) {
   const tokens = temas[tema];
   for (const par of paresDoTema(tokens)) {
-    const frente = corDeTexto(tokens[par.frente]);
-    const fundo = corDeTexto(tokens[par.fundo]);
+    const frente = resolver(tokens, par.frente);
+    const fundo = resolver(tokens, par.fundo);
     const chave = chaveDe({ tema, ...par });
 
     if (!frente || !fundo || frente.a < 1) {
@@ -177,7 +235,7 @@ for (const tema of ['dark', 'light']) {
       // fundo translúcido: o que o olho recebe depende da superfície ATRÁS.
       // Mede-se a composição sobre cada superfície opaca da casa.
       const medidas = SUPERFICIES
-        .map(nome => ({ nome, cor: corDeTexto(tokens[nome] || '') }))
+        .map(nome => ({ nome, cor: resolver(tokens, nome) }))
         .filter(x => x.cor && x.cor.a === 1)
         .map(x => ({ sobre: x.nome, r: doisDigitos(razao(frente, compor(fundo, x.cor))) }));
       if (!medidas.length) {
@@ -225,29 +283,44 @@ const amarelo = s => `\x1b[33m${s}\x1b[0m`;
 const verde = s => `\x1b[32m${s}\x1b[0m`;
 const linha = p => `${p.tema.padEnd(5)} ${p.frente} sobre ${p.fundo}`;
 
-console.log(`contraste WCAG 2.1 — AA texto normal = ${AA_TEXTO_NORMAL}:1 · fonte: ${arquivoTokens}`);
+console.log(`contraste WCAG 2.1 — AA texto normal = ${AA_TEXTO_NORMAL}:1`);
+console.log(`cascata medida (nesta ordem): ${cascata.join('  →  ')}`);
+if (tenantHex) console.log(`\x1b[33mMODO DIAGNÓSTICO DE TENANT\x1b[0m — --cds-primary reescrito para ${tenantHex} (como applyTenantTheme faz). NÃO é gate: o resultado não muda o exit code.`);
 console.log(`${aprovados.length} par(es) ✓ · ${tolerados.length} no passivo declarado · ${naoVerificaveis.length} não verificável(is)\n`);
 
 for (const p of tolerados) {
-  console.log(`${amarelo('~')} ${linha(p)}  ${p.razao}:1  [passivo declarado desde ${p.desde} · dono: ${p.dono}]`);
+  console.log(tenantHex
+    ? `${amarelo('✗')} ${linha(p)}  ${p.razao}:1  REPROVA AA com este acento`
+    : `${amarelo('~')} ${linha(p)}  ${p.razao}:1  [passivo declarado desde ${p.desde} · dono: ${p.dono}]`);
 }
 for (const p of naoVerificaveis) {
   console.log(`${amarelo('?')} ${linha(p)}  NÃO VERIFICÁVEL — ${p.motivo}`);
 }
 for (const p of reprovasNovas) {
-  console.log(`${vermelho('✗')} ${linha(p)}  ${p.razao}:1  REPROVA AA e NÃO está declarado no passivo`);
+  console.log(tenantHex
+    ? `${amarelo('✗')} ${linha(p)}  ${p.razao}:1  REPROVA AA com este acento`
+    : `${vermelho('✗')} ${linha(p)}  ${p.razao}:1  REPROVA AA e NÃO está declarado no passivo`);
 }
 for (const p of regressoes) {
   console.log(`${vermelho('✗')} ${linha(p)}  ${p.razao}:1  REGREDIU (o passivo declarava ${p.declarado}:1)`);
 }
-for (const p of obsoletas) {
-  console.log(`${vermelho('✗')} ${linha(p)}  ${p.razao}:1  agora PASSA — remova a entrada de contrast-allowlist.json`);
-}
-for (const p of orfas) {
-  console.log(`${vermelho('✗')} ${p.tema} ${p.frente} sobre ${p.fundo}  entrada órfã na allowlist: o par não existe mais`);
+// ⛔ No modo tenant a allowlist NÃO se aplica: ela descreve o acento PADRÃO.
+// Reportar "obsoleta" ou "órfã" ali daria conselho errado — mandaria apagar
+// uma dívida real do DS porque a cor de UM cliente passou.
+if (!tenantHex) {
+  for (const p of obsoletas) {
+    console.log(`${vermelho('✗')} ${linha(p)}  ${p.razao}:1  agora PASSA — remova a entrada de contrast-allowlist.json`);
+  }
+  for (const p of orfas) {
+    console.log(`${vermelho('✗')} ${p.tema} ${p.frente} sobre ${p.fundo}  entrada órfã na allowlist: o par não existe mais`);
+  }
 }
 
-const falhas = reprovasNovas.length + regressoes.length + obsoletas.length + orfas.length;
+const falhas = tenantHex ? 0 : reprovasNovas.length + regressoes.length + obsoletas.length + orfas.length;
+if (tenantHex) {
+  console.log(`\n\x1b[33m⚠ diagnóstico, não veredicto.\x1b[0m O passivo declarado vale para o acento PADRÃO do DS; com acento de tenant os números acima são os que aquela pessoa recebe, e ninguém pode travar CI contra eles. Quem garante contraste sob acento arbitrário é o componente que NÃO depende de cor — \`.cds-badge--dot\`.`);
+  process.exit(0);
+}
 if (falhas) {
   console.log(`\n${falhas} problema(s) de contraste. Corrija o par, ou — se for decisão de marca — declare no passivo com valor medido, data e dono.`);
   process.exit(1);

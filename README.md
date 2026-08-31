@@ -20,6 +20,7 @@ cativa-ds/
 │  ├─ lint-tokens.mjs             ← guard de HARDCODE
 │  ├─ lint-contrast.mjs           ← guard de CONTRASTE (WCAG 2.1, dark + light)
 │  └─ contrast-allowlist.json     ← passivo DECLARADO de contraste (dívida com dono)
+│     (`--tenant <hex>` mede o que UM cliente recebe — diagnóstico, não gate)
 ├─ integrations/
 │  ├─ tailwind.preset.js          ← preset Tailwind mapeando as vars
 │  └─ tenant-theming.css/.js      ← cor primária por tenant (applyTenantTheme)
@@ -39,7 +40,7 @@ cativa-ds/
 ## Como distribuir com segurança para o time de agentes
 - **Versione** este diretório num repositório privado (ex.: `@cativa/design-tokens`). Use SemVer: mudança de valor = minor, remoção/renome de token = major.
 - **Publique como pacote** (npm privado ou Git submodule). Agentes consomem a versão fixada (`^1.0.0`), nunca `main`.
-- **Um único dono** edita os tokens; PRs com review. **Os dois guards rodam no CI do próprio pacote** (`.github/workflows/guards.yml`): `lint-tokens` rejeita hex cru, `lint-contrast` rejeita **regressão de contraste** — e **nenhum dos dois pega o que o outro pega**. ⚠️ Sem proteção de branch exigindo o check, eles informam e não travam.
+- **Um único dono** edita os tokens; PRs com review. **Os dois guards rodam no CI do próprio pacote** (`.github/workflows/guards.yml`): `lint-tokens` rejeita hex cru, `lint-contrast` rejeita **regressão de contraste** (medindo a **cascata** `tokens` → `tenant-theming`, que é o que o consumidor carrega) — e **nenhum dos dois pega o que o outro pega**. ⚠️ Sem proteção de branch exigindo o check, eles informam e não travam.
 - **Injete `AGENTS.md` no system prompt** de cada agente e valide o output contra o checklist da seção 6.
 - **Não exponha** este repositório publicamente se contiver roadmap/telemetria; o pacote em si é só design, mas mantenha o pipeline no seu perímetro.
 
