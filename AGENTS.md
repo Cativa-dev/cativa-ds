@@ -15,7 +15,7 @@
 2. **Herde o tema E o tenant.** Não force `background` fixo — use `var(--cds-bg)`. O host injeta `data-theme` (dark/light) e a **cor primária do tenant** em `--cds-primary` (ver §7). O embed só reage; nunca lê `customer.colors` direto para pintar.
 3. **Não redefina os tokens.** Consuma `cativa.tokens.css`; nunca sobrescreva `:root`.
 4. **Ícones só da allowlist Lucide** (`tokens/lucide-allowlist.json`, GAP-DS-009). Fora dela, só com aprovação da @Nina. Não desenhe SVG próprio além de formas triviais (círculo, losango, hexágono de selo).
-5. **Contraste AA.** Texto sobre surface usa `--cds-text`/`--cds-text-2`; nunca `--cds-text-3` para conteúdo essencial.
+5. **Contraste AA — e agora um script mede, em vez de um checkbox perguntar.** Texto sobre surface usa `--cds-text`/`--cds-text-2`; **nunca `--cds-text-3` para conteúdo essencial** (medido: reprova AA sobre as quatro superfícies, nos dois temas). ⛔ **Não pinte texto que precisa de AA sobre um fundo `*-soft`**: eles são **translúcidos**, o contraste depende do que está atrás e o componente não pode garantir o próprio — use `.cds-badge--dot` (opaco, AA por construção). Rode `node scripts/lint-contrast.mjs` (§6). O que já reprovava quando a guarda nasceu está **declarado** em `scripts/contrast-allowlist.json`, com valor medido e dono — **entrada lá não é aprovação, é dívida visível**.
 6. **Alvos de toque ≥ 44px** em contexto mobile.
 7. **Fonte de UI = Onest; serif só em herói/título de seção.** Nunca serif em corpo, label, botão ou input.
 
@@ -58,11 +58,13 @@ O DS traz violeta como **default**, mas `--cds-primary` é feito para ser **sobr
 - **O que acontece:** o helper seta `--cds-primary` = `customer.colors.quaternary` e calcula `--cds-on-primary` por contraste (AA). `--cds-primary-strong` e `--cds-primary-soft` **derivam sozinhos** via `color-mix` — não precisa injetar cada variante.
 - **Regra do agente:** continue usando só `var(--cds-primary)`/`-strong`/`-soft`/`-on-primary`. **Nunca** leia `customer.colors` nem hardcode a cor do tenant. Se nenhuma cor vier, o violeta default prevalece.
 - **Escopo:** para múltiplos tenants na mesma página, aplique no wrapper do embed (`applyTenantTheme(customer, wrapperEl)`), não no `:root`.
+- ⚠️ **O que a guarda de contraste NÃO cobre:** ela mede o **arquivo de tokens**, e o acento do tenant é escrito em **runtime**. `applyTenantTheme` recalcula `--cds-on-primary` por contraste, mas `--cds-primary-soft` continua derivando por `color-mix` com `transparent` — ou seja, **translúcido**, e portanto fora do alcance de qualquer número fixo. É mais uma razão para o texto que precisa de AA não morar sobre `*-soft`.
 
 ## 6. Checklist de aceite (o agente valida antes de entregar)
 - [ ] Zero valores crus de cor/fonte/raio/sombra — só `var(--cds-*)`.
 - [ ] Funciona em dark E light (alternando `data-theme`) E com `--cds-primary` de tenant sobrescrito.
 - [ ] Só ícones Lucide; sem emoji; sem SVG ilustrativo desenhado à mão.
 - [ ] Serif apenas em herói/título; corpo e controles em Onest.
-- [ ] Contraste AA; alvos ≥44px no mobile.
+- [ ] Contraste AA **medido, não afirmado**: `node scripts/lint-contrast.mjs` passa (guarda de contraste, WCAG 2.1, os dois temas). Junto com `node scripts/lint-tokens.mjs <arquivos>` — um pega hardcode, o outro pega contraste, e **nenhum dos dois pega o que o outro pega**.
+- [ ] Alvos ≥44px no mobile.
 - [ ] Nenhuma dependência/endpoint fora da allowlist; entradas sanitizadas.

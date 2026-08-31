@@ -1,0 +1,45 @@
+# ============================================================================
+# guards.yml — gates mecânicos do cativa-ds (nasce na v1.6.0, com a guarda de contraste)
+# ============================================================================
+# POR QUE AQUI, e não no repo que consome o pacote: uma regressão de contraste
+# ou um hardcode nascem QUANDO O TOKEN MUDA — neste repo. O consumidor pina o
+# pacote por SHA, então lá o que chega já passou por aqui. Guardar na ponta
+# seria guardar depois do fato.
+#
+# ⚠️ Para ser BLOQUEANTE de verdade, `main` precisa de proteção de branch
+# exigindo o check `guards` — ato do sponsor (Settings → Branches). Sem a
+# proteção, o guard INFORMA mas não trava; ele já nasce dizendo isso em vez de
+# fingir que trava.
+
+name: guards
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # `lint-tokens` pega HARDCODE. Só isso. Foi o único guard mecânico do
+      # pacote da v1.1.0 até a v1.5.0 — e por isso um par de cor podia nascer
+      # reprovando AA sem nenhum gate ver.
+      - name: Guard de hardcode — lint-tokens
+        run: node scripts/lint-tokens.mjs "css/*.css" "integrations/*.css"
+
+      # `lint-contrast` pega CONTRASTE. Mede todo par semântico do arquivo de
+      # tokens, nos dois temas, contra AA (4.5:1). O passivo que já existia
+      # quando ela nasceu está DECLARADO em scripts/contrast-allowlist.json,
+      # com valor medido, data e dono: a guarda falha em REGRESSÃO NOVA e não
+      # finge que a dívida não existe.
+      - name: Guard de contraste — lint-contrast (WCAG 2.1, dark + light)
+        run: node scripts/lint-contrast.mjs

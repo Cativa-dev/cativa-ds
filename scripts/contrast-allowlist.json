@@ -1,0 +1,163 @@
+{
+  "gerado_por": "scripts/lint-contrast.mjs",
+  "o_que_e_isto": "PASSIVO DECLARADO de contraste. Cada linha e um par que REPROVA AA (4.5:1) hoje, com o valor medido no dia em que a guarda nasceu. A guarda falha em regressao nova e em piora destes; NAO os transforma em conformidade. Entrada aqui NAO e aprovacao — e divida visivel com dono.",
+  "como_sair_daqui": "Corrigir o par (mudar o token de marca) OU aceitar formalmente e declarar o nivel (ex.: AA-large so para texto grande). As duas saidas sao do sponsor. Ao corrigir, REMOVA a entrada — a guarda reprova entrada obsoleta de proposito, para o passivo nao apodrecer.",
+  "metodo": "WCAG 2.1, luminancia relativa, valores reais de tokens/cativa.tokens.css, por tema. Fundo translucido: composicao alfa sobre cada superficie opaca da casa; o valor gravado e o MELHOR caso.",
+  "aberto_em": "2026-08-31",
+  "origem": "GAP-DS-041 · laudo-nina-contraste.md (fabric-platform) · acao N-3",
+  "pares": [
+    {
+      "tema": "dark",
+      "frente": "--cds-on-primary",
+      "fundo": "--cds-primary",
+      "razao": 4.23,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
+    },
+    {
+      "tema": "dark",
+      "frente": "--cds-on-danger",
+      "fundo": "--cds-danger",
+      "razao": 2.69,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
+    },
+    {
+      "tema": "dark",
+      "frente": "--cds-primary",
+      "fundo": "--cds-primary-soft",
+      "razao": 4.14,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+    },
+    {
+      "tema": "dark",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-bg",
+      "razao": 4.09,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "dark",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-surface",
+      "razao": 3.81,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "dark",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-surface-2",
+      "razao": 3.55,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "dark",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-surface-3",
+      "razao": 3.24,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-on-warning",
+      "fundo": "--cds-warning",
+      "razao": 3.19,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-on-success",
+      "fundo": "--cds-success",
+      "razao": 3.77,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Par sólido do sistema: texto legível sobre a cor cheia. Reprova AA com o valor de marca atual. Consertar significa MUDAR um token canônico de marca — decisão de marca x acessibilidade, do sponsor (regra do token real, @Nina)."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-success",
+      "fundo": "--cds-success-soft",
+      "razao": 3.34,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-danger",
+      "fundo": "--cds-danger-soft",
+      "razao": 4.01,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-warning",
+      "fundo": "--cds-warning-soft",
+      "razao": 2.86,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-info",
+      "fundo": "--cds-info-soft",
+      "razao": 3.27,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Cor cheia sobre o proprio fundo suave (badge/chip/delta). O fundo e translucido: este numero e o MELHOR caso, medido sobre a superficie mais favoravel da casa — reprova mesmo ali. Saida sem tocar marca: .cds-badge--dot (chip opaco, AA por construcao)."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-bg",
+      "razao": 2.39,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-surface",
+      "razao": 2.56,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-surface-2",
+      "razao": 2.29,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    },
+    {
+      "tema": "light",
+      "frente": "--cds-text-3",
+      "fundo": "--cds-surface-3",
+      "razao": 2.12,
+      "desde": "2026-08-31",
+      "dono": "sponsor (Ricardo Mota)",
+      "motivo": "Terceiro nivel de texto (nota, rodape, periodo, placeholder). Reprova AA como texto normal. Onde marca estado desabilitado a WCAG isenta; onde carrega informacao, nao. Decisao de marca x acessibilidade, do sponsor."
+    }
+  ]
+}

@@ -38,6 +38,8 @@
 
 **Variantes:** `--primary`, `--secondary`, `--ghost`, `--danger` (soft), `--danger-solid`, `--success` (soft), `--icon`.
 
+**Modificador de largura:** `--block` (`display:flex; width:100%`). Existe para **matar um hardcode que o `lint-tokens` não pega**: `width: 100%` cru não é cor, fonte, raio, sombra nem espaço, então passa pelo linter — e por isso todo mundo escrevia à mão. Combina com qualquer variante e com `--sm`/`--lg`.
+
 **Estados:**
 | Estado | Existe? | Como |
 |---|---|---|
@@ -63,7 +65,7 @@
 | `aria-label` | string | — | **sim quando `--icon`** |
 | `type` | submit/button | button no HTML exportado | sim em formulário |
 
-**A11y:** role nativo `button`. Teclado: Enter/Espaço nativos. Ordem de foco = ordem do DOM. Alvo ≥ 2.75rem (padrão e icon; **`--sm` tem 2rem e NÃO atende os 44px** — declarado). Contraste: `--cds-on-primary` sobre `--cds-primary` ≈ 4.6:1 no escuro (AA texto normal, no limite); soft-variants usam cor cheia sobre soft (AA). `data-loading` **não** anuncia nada — falta `aria-busy`: **[AUSENTE]**.
+**A11y:** role nativo `button`. Teclado: Enter/Espaço nativos. Ordem de foco = ordem do DOM. Alvo ≥ 2.75rem (padrão e icon; **`--sm` tem 2rem e NÃO atende os 44px** — declarado). 🔴 **Contraste — a afirmação anterior era falsa e foi remedida em 2026-08-31** (`scripts/lint-contrast.mjs`, WCAG 2.1 sobre os valores reais): `--cds-on-primary` sobre `--cds-primary` dá **4.23:1 no escuro** — **REPROVA** AA para texto normal — e 5.70:1 no claro. O escuro é o tema *default*. ⛔ `--danger-solid` é o pior do sistema: **2.69:1 no escuro**. As variantes *soft* pintam cor cheia sobre fundo **translúcido**, então **não existe um número único a afirmar** — o contraste depende da superfície atrás (no tema claro, `--danger` soft dá 4.01:1 na superfície mais favorável e reprova). Tudo isto está no **passivo declarado** de `scripts/contrast-allowlist.json`, com dono: **é decisão de marca × acessibilidade do sponsor**, não da implementação. `data-loading` **não** anuncia nada — falta `aria-busy`: **[AUSENTE]**.
 
 **Ícones (Lucide):** `plus`, `download`, `trash-2`, `check`, `settings`.
 
@@ -95,6 +97,8 @@
 <button type="button" class="cds-btn cds-btn--icon" aria-label="Configurações">
   <svg class="cds-icon" data-lucide="settings" aria-hidden="true"></svg>
 </button>
+
+<button type="button" class="cds-btn cds-btn--primary cds-btn--block">Ação do dia</button>
 ```
 
 ---
@@ -201,7 +205,13 @@
 
 **Anatomia:** pill + `[ícone opcional]` + rótulo caixa-alta com tracking.
 
-**Variantes:** neutra (default, borda), `--primary`, `--success`, `--danger`, `--warning`, `--info`.
+**Variantes:** neutra (default, borda), `--primary`, `--success`, `--danger`, `--warning`, `--info`, e **`--dot`** (chip opaco + ponto semântico — ver abaixo).
+
+**Variantes do ponto** (`.cds-badge__dot` + uma): `--primary` · `--success` · `--danger` · `--warning` · `--info`. Sem modificador, o ponto é neutro (`--cds-text-3`). ⚠️ **São as cinco cores cheias**, não as `*-soft`: aqui a cor é uma **forma de 8px**, não um fundo de texto — o critério é o **não-textual** de 3:1 da WCAG 1.4.11, e quem carrega a informação é o **texto do chip**.
+
+🔴 **`--dot` é o único que garante o próprio contraste.** As cinco variantes coloridas pintam cor cheia sobre fundo `*-soft`, que é **translúcido**: o que o olho recebe depende da superfície **atrás**, então o componente **não pode garantir o próprio contraste** — passa numa superfície e reprova em outra. `--dot` troca o mecanismo: superfície **opaca** (`--cds-surface-2`) + texto neutro (`--cds-text`) + um **ponto** (`.cds-badge__dot--*`) que carrega o significado. ⇒ **AA por construção**, em qualquer tema, sob qualquer acento de tenant, sobre qualquer fundo — *(medido: 15.63:1 no escuro, 15.85:1 no claro)*. É o mesmo vocabulário do `.cds-status__dot`, que o pacote já tinha. ⛔ **A cor nunca é o único portador:** o texto do chip diz o estado, e o ponto leva `aria-hidden`.
+
+⚠️ **As cinco coloridas continuam existindo** (remover seria *major*) — use-as onde o fundo é conhecido e o texto não precisa de AA. **Onde precisa, use `--dot`.**
 
 **Estados:** repouso **sim**. **Nenhum outro existe** — sem hover, foco, ativo, desabilitado, carregando, vazio, erro, selecionado, somente-leitura.
 
@@ -209,7 +219,7 @@
 
 **API:** só classes.
 
-**A11y:** sem role (é `<span>`). Se o badge for a única fonte de um estado, ele precisa ser lido: envolva com texto ou `.cds-sr-only` — **[ADIÇÃO-A11Y]**. Contraste: cor cheia sobre `*-soft` atende AA em ambos os temas nos valores atuais (não medido caso a caso — **não afirmo conformidade completa**).
+**A11y:** sem role (é `<span>`). Se o badge for a única fonte de um estado, ele precisa ser lido: envolva com texto ou `.cds-sr-only` — **[ADIÇÃO-A11Y]**. 🔴 **Contraste — a afirmação anterior era falsa e foi remedida em 2026-08-31.** Onde se lia *"cor cheia sobre `*-soft` atende AA em ambos os temas"*, a medição (`scripts/lint-contrast.mjs`) diz o contrário: no **tema claro os quatro reprovam AA até na superfície mais favorável** — `success` 3.34:1, `danger` 4.01:1, `warning` 2.86:1, `info` 3.27:1 — e no escuro o `--primary` reprova em toda superfície (melhor caso 4.14:1). O que salvava a frase antiga era o *"não medido caso a caso"*: **ninguém tinha medido.** Agora um script mede a cada CI. Use `--dot` quando o texto precisa de AA.
 
 **Ícones:** `video` (LIVE), `monitor` (ONLINE), `globe` (PÚBLICO).
 
@@ -220,6 +230,14 @@
 <span class="cds-badge">Via aceleração</span>
 <span class="cds-badge cds-badge--warning">Em breve</span>
 <span class="cds-badge cds-badge--danger">Esgotado</span>
+
+<!-- --dot: AA por construção. O texto diz o estado; o ponto só reforça. -->
+<span class="cds-badge cds-badge--dot">
+  <span class="cds-badge__dot cds-badge__dot--success" aria-hidden="true"></span>Publicado
+</span>
+<span class="cds-badge cds-badge--dot">
+  <span class="cds-badge__dot cds-badge__dot--danger" aria-hidden="true"></span>Esgotado
+</span>
 ```
 
 ---
