@@ -240,6 +240,47 @@
 
 ---
 
+## 21b. Action card — `.cds-action-card`
+**Estado: [IMPLEMENTADO]** *(nasce na v1.6.0 — fecha a GAP-DS-038)*
+
+**Para que serve:** oferecer **uma** ação em largura total dentro de um card — o "faça isto agora" de uma home ou de um painel. Nasce porque o pacote não tinha veículo para isso: quem precisava escrevia `width:100%` à mão, e o `lint-tokens` **não pega** `width` (só cor, fonte, raio, sombra e espaço).
+
+**Quando NÃO usar:**
+- Quando a ação **não** é a principal daquela área — aí é `.cds-btn` normal dentro de `.cds-card`.
+- Como item de lista clicável — não existe estado de hover/foco no card, **de propósito** (ver abaixo).
+- Para exibir número sem ação — use `.cds-stat` (é a mesma forma, sem a ação).
+
+**Anatomia:** `__head` (ícone opcional + `__title` + `__note`) + o botão. O ícone **reusa `.cds-stat__icon`** — não há classe nova para ele.
+
+**Variantes:** nenhuma. A ação de dentro escolhe a sua (`.cds-btn--primary.cds-btn--block` é o caso normal).
+
+**Estados:** repouso **sim**. **Nenhum outro existe** — sem hover, foco, ativo, desabilitado, carregando, vazio, erro, selecionado.
+
+> ⛔ **NÃO é um `.cds-btn` gigante, e a diferença não é estética.** O **card** não é clicável; o **botão dentro dele** é. Card inteiro clicável quebra abrir-em-nova-aba, engole o texto secundário na etiqueta acessível e força o leitor de tela a anunciar o parágrafo inteiro como nome do controle. Por isso o card **não tem** `:hover` nem `:focus-visible`: se ele os tivesse, prometeria uma interação que não entrega.
+
+**Tamanhos:** único (largura do container).
+
+**API:** só classes.
+
+**A11y:** o card é um contêiner sem role. O nome acessível da ação é o **rótulo do botão**, e ele precisa fazer sentido sozinho ("Estudar 12 cartas", não "Ir"). Foco: só o botão entra na ordem de tabulação — **é o comportamento pretendido**. Contraste: `--cds-text` sobre `--cds-surface` e `--cds-text-2` sobre `--cds-surface` passam AA nos dois temas *(medido: 16.75:1 / 7.18:1 no escuro; 17.72:1 / 7.73:1 no claro)*. ⚠️ O **botão** dentro herda o contraste da variante escolhida — e `--primary` está no **passivo declarado** (`scripts/contrast-allowlist.json`).
+
+**Ícones:** `layers`, `play`, `book-open`, `zap`.
+
+```html
+<div class="cds-action-card">
+  <div class="cds-action-card__head">
+    <span class="cds-stat__icon"><svg class="cds-icon cds-icon--lg" data-lucide="layers" aria-hidden="true"></svg></span>
+    <div>
+      <p class="cds-action-card__title">Revisão de hoje</p>
+      <p class="cds-action-card__note">12 cartas devidas</p>
+    </div>
+  </div>
+  <button type="button" class="cds-btn cds-btn--primary cds-btn--block">Estudar 12 cartas</button>
+</div>
+```
+
+---
+
 ## 22. Chip de variação — `.cds-chip`
 **Estado: [IMPLEMENTADO]**
 **Para que serve:** mostrar variação positiva/negativa ao lado de um número.

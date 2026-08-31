@@ -6,13 +6,23 @@ Fonte única de verdade para que apps embedados pareçam nativos da Cativa.
 ```
 cativa-ds/
 ├─ AGENTS.md                      ← contrato p/ agentes (vai no system prompt)
-├─ README.md
+├─ README.md · CHANGELOG.md
 ├─ tokens/
 │  ├─ cativa.tokens.css           ← CSS vars, dark + light  (importe SEMPRE)
 │  ├─ cativa.tokens.json          ← tokens estruturados (build tools / diff)
-│  └─ cativa.tokens.ts            ← tokens tipados (TS/React)
+│  ├─ cativa.tokens.ts            ← tokens tipados (TS/React)
+│  └─ lucide-allowlist.json       ← ícones permitidos
+├─ css/
+│  └─ cativa.components.css       ← a camada de COMPONENTES (classes .cds-*)
+├─ components/                    ← o verbete de cada componente (contrato de uso)
+├─ icons/                         ← Lucide inline
+├─ scripts/
+│  ├─ lint-tokens.mjs             ← guard de HARDCODE
+│  ├─ lint-contrast.mjs           ← guard de CONTRASTE (WCAG 2.1, dark + light)
+│  └─ contrast-allowlist.json     ← passivo DECLARADO de contraste (dívida com dono)
 ├─ integrations/
-│  └─ tailwind.preset.js          ← preset Tailwind mapeando as vars
+│  ├─ tailwind.preset.js          ← preset Tailwind mapeando as vars
+│  └─ tenant-theming.css/.js      ← cor primária por tenant (applyTenantTheme)
 └─ reference/
    └─ Cativa Design System.html   ← "storybook" navegável (fonte visual)
 ```
@@ -29,7 +39,7 @@ cativa-ds/
 ## Como distribuir com segurança para o time de agentes
 - **Versione** este diretório num repositório privado (ex.: `@cativa/design-tokens`). Use SemVer: mudança de valor = minor, remoção/renome de token = major.
 - **Publique como pacote** (npm privado ou Git submodule). Agentes consomem a versão fixada (`^1.0.0`), nunca `main`.
-- **Um único dono** edita os tokens; PRs com review. Rode um linter que rejeita hex cru no output dos agentes.
+- **Um único dono** edita os tokens; PRs com review. **Os dois guards rodam no CI do próprio pacote** (`.github/workflows/guards.yml`): `lint-tokens` rejeita hex cru, `lint-contrast` rejeita **regressão de contraste** — e **nenhum dos dois pega o que o outro pega**. ⚠️ Sem proteção de branch exigindo o check, eles informam e não travam.
 - **Injete `AGENTS.md` no system prompt** de cada agente e valide o output contra o checklist da seção 6.
 - **Não exponha** este repositório publicamente se contiver roadmap/telemetria; o pacote em si é só design, mas mantenha o pipeline no seu perímetro.
 

@@ -115,6 +115,11 @@
 .cds-btn--icon { width: var(--cds-touch-min); height: var(--cds-touch-min); padding: 0; background: var(--cds-surface-2); color: var(--cds-text-2); border-color: var(--cds-border); }
 .cds-btn--icon:hover { color: var(--cds-text); }
 
+/* largura total. Existe para MATAR um hardcode que o lint-tokens NÃO pega:
+   `width: 100%` cru não é cor, fonte, raio, sombra nem espaço, então passa
+   pelo linter — e por isso todo mundo escrevia à mão. */
+.cds-btn--block { display: flex; width: 100%; }
+
 /* -- tamanhos -- */
 .cds-btn--sm { padding: 0.375rem 0.75rem; font-size: var(--cds-fs-xs); border-radius: var(--cds-radius-sm); min-height: 2rem; }
 .cds-btn--lg { padding: 0.8125rem 1.5rem; font-size: var(--cds-fs-body); border-radius: var(--cds-radius-lg); }
@@ -223,6 +228,26 @@
 .cds-badge--warning { background: var(--cds-warning-soft); color: var(--cds-warning); border-color: transparent; }
 .cds-badge--info    { background: var(--cds-info-soft);    color: var(--cds-info);    border-color: transparent; }
 
+/* ------------------------------------------------------------------
+   BADGE COM PONTO — o badge que garante o PRÓPRIO contraste.
+   As 5 variantes acima pintam cor cheia sobre fundo `*-soft`, que é
+   TRANSLÚCIDO: o que o olho recebe depende da superfície ATRÁS, então
+   o componente não pode garantir o próprio contraste (medido em
+   scripts/lint-contrast.mjs — saem como NÃO VERIFICÁVEL, e no tema
+   claro os quatro reprovam AA até na superfície mais favorável).
+   Aqui a saída não é escolher cores melhores: é parar de depender
+   delas. Superfície OPACA + texto neutro = AA por construção, em
+   qualquer tema, sob qualquer acento de tenant, sobre qualquer fundo.
+   ⛔ A cor NUNCA é o único portador: o texto do chip diz o estado.
+   ------------------------------------------------------------------ */
+.cds-badge--dot { background: var(--cds-surface-2); color: var(--cds-text); border-color: var(--cds-border); }
+.cds-badge__dot { width: 0.5rem; height: 0.5rem; border-radius: var(--cds-radius-full); background: var(--cds-text-3); flex-shrink: 0; }
+.cds-badge__dot--primary { background: var(--cds-primary); }
+.cds-badge__dot--success { background: var(--cds-success); }
+.cds-badge__dot--danger  { background: var(--cds-danger); }
+.cds-badge__dot--warning { background: var(--cds-warning); }
+.cds-badge__dot--info    { background: var(--cds-info); }
+
 .cds-chip { display: inline-flex; align-items: center; gap: 0.375rem; padding: var(--cds-space-xs) 0.875rem; border-radius: var(--cds-radius-sm); font-size: var(--cds-fs-sm); font-weight: var(--cds-fw-semibold); }
 .cds-chip--up   { background: var(--cds-success-soft); color: var(--cds-success); }
 .cds-chip--down { background: var(--cds-danger-soft);  color: var(--cds-danger); }
@@ -299,6 +324,15 @@
 .cds-stat__label { font-size: var(--cds-fs-sm); color: var(--cds-text-2); }
 .cds-stat__value { font-size: var(--cds-fs-h2); font-weight: var(--cds-fw-extrabold); }
 .cds-stat__note  { font-size: var(--cds-fs-xs); font-weight: var(--cds-fw-medium); color: var(--cds-text-3); }
+
+/* card ACIONÁVEL em largura total — mesma forma do .cds-stat, com a ação dentro.
+   ⛔ NÃO é um .cds-btn gigante: o CARD não é clicável, o BOTÃO dentro dele é.
+   A diferença importa para leitor de tela e para abrir-em-nova-aba.
+   O ícone, quando houver, reusa .cds-stat__icon — não há classe nova para ele. */
+.cds-action-card { display: flex; flex-direction: column; gap: var(--cds-space-md); background: var(--cds-surface); border: 1px solid var(--cds-border); border-radius: var(--cds-radius-lg); padding: var(--cds-space-md); }
+.cds-action-card__head  { display: flex; align-items: center; gap: var(--cds-space-md); }
+.cds-action-card__title { font-size: var(--cds-fs-ui); font-weight: var(--cds-fw-bold); color: var(--cds-text); }
+.cds-action-card__note  { font-size: var(--cds-fs-sm); color: var(--cds-text-2); }
 
 /* ============================================================
    TABELA (grid) — a origem NÃO usa <table>; ver INCOERENCIAS
